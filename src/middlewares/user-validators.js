@@ -1,5 +1,6 @@
 import { body, param } from "express-validator";
-import { emailExists, usernameExists, userExists } from "../helpers/db-validators.js";
+import { emailExists, usernameExists, userExists} from "../helpers/db-validators.js";
+import { readFilePfP } from "./readFilePfP.js";
 import { validarCampos } from "./validate-fields.js";
 import { deleteFileOnError } from "./delete-file-on-error.js";
 import { handleErrors } from "./handle-errors.js";
@@ -60,5 +61,9 @@ export const updateUserValidator = [
     handleErrors
 ]
 
-
-
+export const updateProfilePicValidator = [
+    body("profilePicture").optional().custom(readFilePfP).withMessage("El archivo debe ser una imagen válida"),
+    validarCampos,
+    handleErrors
+  ];
+  

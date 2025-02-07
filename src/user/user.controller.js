@@ -127,3 +127,42 @@ export const updateUser = async (req, res) => {
         });
     }
 }
+
+
+export const updateProfilePic = async (req, res) => {
+    try {
+      const userId = req.params;
+      const profilePicture = req.file ? req.file.path : null;
+  
+      if (!profilePicture) {
+        return res.status(400).json({
+          success: false,
+          message: "No se proporcionó ninguna foto de perfil",
+        });
+      }
+  
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "Usuario no encontrado",
+        });
+      }
+  
+      user.profilePicture = profilePicture;
+      await user.save(); 
+  
+      return res.status(200).json({
+        success: true,
+        message: "Foto de perfil actualizada ",
+        user,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        message: "No se ha actuaizado la foto de Perfil",
+        error: err.message,
+      });
+    }
+  };

@@ -9,3 +9,7 @@ export const createAppointmentValidator = [
     validarCampos,
     handleErrors
 ];
+
+export const readAppointmentsValidator = [
+    
+]

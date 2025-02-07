@@ -56,3 +56,26 @@ export const saveAppointment = async (req, res) => {
     }); 
   }
 };
+
+export const readAppointments = async (req, res) =>{
+  try{
+    const {uid} = req.params;
+    const query = { user: uid };
+    const [total, appointments] = await Promise.all([
+      Appointment.countDocuments(query),
+      Appointment.find(query)
+ 
+  ])
+  return res.status(200).json({
+    success: true,
+    total,
+    appointments
+})
+  }catch(err){
+    return res.status(500).json({
+      success: false,
+      message: "Error al listar las citas del usuario",
+      error: err.messagge
+    })
+  }
+}
