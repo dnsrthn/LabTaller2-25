@@ -79,3 +79,35 @@ export const readAppointments = async (req, res) =>{
     })
   }
 }
+
+export const updateAppointment = async (req, res) => {
+  try {
+    const { appointmentId } = req.params;
+    const updateData = req.body;
+
+    const updatedAppointment = await Appointment.findByIdAndUpdate(
+      appointmentId,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedAppointment) {
+      return res.status(404).json({
+        success: false,
+        message: "Cita no encontrada"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "La cita se ha actiualizadp",
+      appointment: updatedAppointment
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "La cita ha tenido un error al actualizars",
+      error: err.message
+    });
+  }
+};
